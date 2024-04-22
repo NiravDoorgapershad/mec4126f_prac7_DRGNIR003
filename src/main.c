@@ -1,8 +1,8 @@
-// Written by:
-// Date created:
+// Written by: Nirav Doorgapershad
+// Date created: 22/04/24
 // Programmed in: STM32CubeIDE
 // Target: STM32F051
-// Description:
+// Description: Practical 7
 
 // DEFINES AND INCLUDES
 #include "stm32f0xx.h"
