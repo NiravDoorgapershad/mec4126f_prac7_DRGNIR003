@@ -30,7 +30,23 @@ void main(void)
 // OTHER FUNCTIONS
 /* Description:
 * This function resets the STM32 Clocks to 48 MHz
+*
 */
+
+
+void init_Timer14(void){
+	RCC->APB1ENR |= RCC_APB1ENR_TIM14EN;
+	TIM14->PSC = 47999;
+	TIM14->ARR = 100;
+	TIM14->DIER |= TIM_DIER_UIE;
+	TIM14-> CR1 |= TIM_CR1_CEN;
+	Nvic_EnableIRQ(TIM14_IRQn);
+}
+
+void TIM14_IRQHandler(void){
+	TIM14->SR &= ~TIM_SR_UIF;
+}
+
 void ResetClockTo48Mhz(void)
 {
     if ((RCC->CFGR & RCC_CFGR_SWS) == RCC_CFGR_SWS_PLL)
