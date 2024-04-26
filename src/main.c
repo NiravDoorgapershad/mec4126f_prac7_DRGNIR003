@@ -47,6 +47,22 @@ void TIM14_IRQHandler(void){
 	TIM14->SR &= ~TIM_SR_UIF;
 }
 
+void init_Timer3(void){
+	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
+	RCC->AHBENR |= RCC_AHBENR_GPIOBEN;//enable clock for PB
+	GPIOB->MODER |= GPIO_MODER_MODER4_1|GPIO_MODER_MODER5_1;
+	GPIOB->AFR[0] |= 0x01 <<(4*4);
+	//GPIOB->AFR[0] |= 0x01 <<(4*5);
+
+	TIM3->PSC = 23;
+	TIM3->ARR = 99;
+	TIM3->CCR1 =50;
+	TIM3-> CCMR1 |= TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1PE;
+	TIM3->CCER |= TIM_CCER_CC1E;
+	TIM3->CR1 |= TIM_CR1_CEN;
+}
+
+
 void ResetClockTo48Mhz(void)
 {
     if ((RCC->CFGR & RCC_CFGR_SWS) == RCC_CFGR_SWS_PLL)
