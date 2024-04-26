@@ -11,6 +11,12 @@
 
 // GLOBAL VARIABLES
 _Bool flag = TRUE;
+uint16_t duty_cycle_1 = 50;
+uint16_t duty_cycle_2 = 50;
+_Bool dc1 = TRUE;
+_Bool dc2 = TRUE;
+
+
 
 // FUNCTION DECLARATIONS
 void ResetClockTo48Mhz(void);
@@ -45,6 +51,33 @@ void init_Timer14(void){
 
 void TIM14_IRQHandler(void){
 	TIM14->SR &= ~TIM_SR_UIF;
+	if(duty_cycle_1 == 100){
+		dc1 = FALSE;
+	}
+	else if(duty_cycle_1==0){
+		dc1 = TRUE;
+	}
+
+	if(duty_cycle_2 == 100){
+		dc2 = FALSE;
+	}
+	else if(duty_cycle_2==0){
+		dc2 = TRUE;
+
+	if(dc1){
+		duty_cycle_1++;
+	}
+	else{
+		duty_cycle_1--;
+	}
+
+	if(dc2){
+		duty_cycle_1++;
+	}
+	else{
+		duty_cycle_1--;
+	}
+
 }
 
 void init_Timer3(void){
@@ -58,9 +91,9 @@ void init_Timer3(void){
 
 	TIM3->PSC = 23;
 	TIM3->ARR = 99;
-	TIM3->CCR1 =50;
+	TIM3->CCR1 =dc1;
 	TIM3->CCR2 = TIM3->CCR1;
-	TIM3->CCR3 =50;
+	TIM3->CCR3 =dc2;
 	TIM3->CCR4 = TIM3->CCR3;
 
 	TIM3-> CCMR1 |= TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1PE;
